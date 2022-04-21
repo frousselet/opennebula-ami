@@ -1,0 +1,96 @@
+---
+# playbook.yml
+- name: "Provision OpenNebula AMI"
+  hosts: default
+  become: true
+
+  tasks:
+    - name: Install gnupg
+      apt:
+        name: "gnupg"
+        state: present
+
+    - name: Install wget
+      apt:
+        name: "wget"
+        state: present
+
+    - name: Install apt-transport-https
+      apt:
+        name: "apt-transport-https"
+        state: present
+
+    - name: add OpenNebula APT key
+      apt_key:
+        url: "https://downloads.opennebula.io/repo/repo.key"
+        state: present
+
+    - name: add OpenNebula APT repository
+      apt_repository:
+        repo: "deb https://downloads.opennebula.io/repo/6.2/Ubuntu/18.04 stable opennebula"
+        state: present
+
+    - name: add NodeJS APT key
+      apt_key:
+        url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+        state: present
+
+    - name: add NodeJS APT repository
+      apt_repository:
+        repo: "deb https://deb.nodesource.com/node_12.x bionic main"
+        state: present
+
+    - name: Install opennebula
+      apt:
+        name: "opennebula"
+        state: present
+
+    - name: Install opennebula-sunstone
+      apt:
+        name: "opennebula-sunstone"
+        state: present
+
+    - name: Install opennebula-fireedge
+      apt:
+        name: "opennebula-fireedge"
+        state: present
+
+    - name: Install opennebula-gate
+      apt:
+        name: "opennebula-gate"
+        state: present
+
+    - name: Install opennebula-flow
+      apt:
+        name: "opennebula-flow"
+        state: present
+
+    - name: Install opennebula-provision
+      apt:
+        name: "opennebula-provision"
+        state: present
+
+    - name: Enable opennebula
+      ansible.builtin.systemd:
+        name: opennebula
+        enabled: yes
+
+    - name: Enable opennebula-sunstone
+      ansible.builtin.systemd:
+        name: opennebula-sunstone
+        enabled: yes
+
+    - name: Enable opennebula-fireedge
+      ansible.builtin.systemd:
+        name: opennebula-fireedge
+        enabled: yes
+
+    - name: Enable opennebula-gate
+      ansible.builtin.systemd:
+        name: opennebula-gate
+        enabled: yes
+
+    - name: Enable opennebula-flow
+      ansible.builtin.systemd:
+        name: opennebula-flow
+        enabled: yes
